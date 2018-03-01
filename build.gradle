@@ -1,13 +1,3 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.1.0'
-    }
-}
-apply plugin: 'org.junit.platform.gradle.plugin'
-
 group 'com.topcoder'
 version '1.0-SNAPSHOT'
 
@@ -20,22 +10,14 @@ repositories {
 }
 
 dependencies {
-    testCompile(
-            'org.junit.jupiter:junit-jupiter-api:5.1.0'
-    )
-    testRuntime(
-            'org.junit.jupiter:junit-jupiter-engine:5.1.0',
-            'org.junit.platform:junit-platform-launcher:1.1.0',
-            'org.junit.vintage:junit-vintage-engine:5.1.0'
-    )
-    
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
 }
-
-junitPlatform {
-    platformVersion '1.1.0' // optional, defaults to plugin version
-    reportsDir file('build/test-results/junit-platform') // this is the default
-    // enableStandardTestTask true
-    // selectors (optional)
-    // filters (optional)
-    // logManager (optional)
+test {
+    useJUnitPlatform {
+        excludeTags 'slow'
+        includeEngines 'junit-jupiter', 'junit-vintage'
+    }
+    
+    failFast = true
 }
